@@ -7,7 +7,7 @@ import {
     useUnifiedWallet,
     useUnifiedWalletContext,
 } from "@jup-ag/wallet-adapter";
-import { ComputeBudgetProgram, Transaction } from "@solana/web3.js";
+import { ComputeBudgetProgram, PublicKey, Transaction } from "@solana/web3.js";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { SPRITE_VAULT } from "@/lib/constants";
@@ -20,6 +20,7 @@ interface PaymentProps {
     name: string;
     userId: string;
     paymentId: string;
+    authority?: string; // Only for withdrawals
     signature?: string; // Only for withdrawals
 }
 
@@ -28,6 +29,7 @@ export function Payment({
     name,
     userId,
     paymentId,
+    authority,
     signature,
 }: PaymentProps) {
     const { publicKey, signTransaction } = useUnifiedWallet();
@@ -80,13 +82,18 @@ export function Payment({
                 throw new Error("signature required for withdrawal");
             }
 
+            if (!isDeposit && !authority) {
+                throw new Error("authority required for withdrawal");
+            }
+
             // Get the appropriate instruction based on type
             const ins = isDeposit
-                ? await Vault.deposit(SPRITE_VAULT, publicKey, paymentId)
+                ? [await Vault.deposit(SPRITE_VAULT, publicKey, paymentId)]
                 : await Vault.withdraw(
                       SPRITE_VAULT,
                       publicKey,
                       paymentId,
+                      new PublicKey(authority || ""),
                       signature || "",
                   );
 
@@ -96,7 +103,7 @@ export function Payment({
                 ComputeBudgetProgram.setComputeUnitPrice({
                     microLamports: ctx.reasonablePriorityFee,
                 }),
-                ins,
+                ...ins,
             );
             tx.feePayer = publicKey;
             tx.recentBlockhash = ctx.blockhash;
@@ -121,6 +128,7 @@ export function Payment({
             });
             router.push(`/${type}-complete?${params.toString()}`);
         } catch (error) {
+            console.error(error);
             // Redirect to error page
             const params = new URLSearchParams({
                 status: "error",

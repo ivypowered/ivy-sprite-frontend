@@ -152,7 +152,7 @@ export function PaymentComplete({
                                         Amount:
                                     </span>
                                     <span className="font-bold text-sky-400">
-                                        {amount.toFixed(2)} IVY
+                                        {amount.toString()} IVY
                                     </span>
                                 </div>
 

@@ -11,6 +11,7 @@ function WithdrawPage() {
     const name = searchParams.get("name") || "";
     const userId = searchParams.get("user_id") || "";
     const withdrawId = searchParams.get("withdraw_id") || "";
+    const authority = searchParams.get("authority") || "";
     const signature = searchParams.get("signature") || "";
 
     return (
@@ -19,6 +20,7 @@ function WithdrawPage() {
             name={name}
             userId={userId}
             paymentId={withdrawId}
+            authority={authority}
             signature={signature}
         />
     );
