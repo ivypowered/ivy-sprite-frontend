@@ -201,7 +201,7 @@ export function Payment({
                                 <div className="mt-1 bg-slate-950 border border-slate-800 px-4 py-3  flex items-baseline justify-between">
                                     <div className="flex items-baseline gap-3">
                                         <span className="text-3xl font-bold text-sky-400">
-                                            {amount.toFixed(2)}
+                                            {amount.toString()}
                                         </span>
                                         <span className="text-2xl text-slate-400">
                                             IVY
