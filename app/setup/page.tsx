@@ -1,6 +1,7 @@
 "use client";
 
 import { WalletProvider } from "@/components/WalletProvider";
+import { PageLayout } from "@/components/PageLayout";
 import { Vault } from "ivy-sdk";
 import {
     useUnifiedWallet,
@@ -126,131 +127,114 @@ function SetupPage() {
     ]);
 
     return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 font-mono">
-            <main className="container mx-auto px-4 py-16 max-w-2xl">
-                <div className="text-center mb-12">
-                    <h1 className="text-4xl font-bold text-sky-400 mb-2">
-                        ivy-vault setup
-                    </h1>
-                </div>
+        <PageLayout hideFooter>
+            <div className="text-center mb-12">
+                <h1 className="text-4xl font-bold text-sky-400 mb-2">
+                    ivy-vault setup
+                </h1>
+            </div>
 
-                <div className="border-2 border-sky-500 bg-slate-900 mb-8">
-                    <div className="border-b-2 border-sky-500 bg-sky-500/10 px-6 py-4">
-                        <h2 className="text-xl font-bold text-sky-400">
-                            Create Vault
-                        </h2>
-                    </div>
-                    <div className="p-6 space-y-4">
-                        <button
-                            onClick={handleCreate}
+            <div className="border-2 border-sky-500 bg-slate-900 mb-8">
+                <div className="border-b-2 border-sky-500 bg-sky-500/10 px-6 py-4">
+                    <h2 className="text-xl font-bold text-sky-400">
+                        Create Vault
+                    </h2>
+                </div>
+                <div className="p-6 space-y-4">
+                    <button
+                        onClick={handleCreate}
+                        disabled={buttonDisabled}
+                        className="w-full bg-sky-500 text-slate-950 py-3 px-6 font-bold uppercase tracking-wider cursor-pointer disabled:cursor-default"
+                    >
+                        {loading === "create"
+                            ? "Processing..."
+                            : "Create Vault"}
+                    </button>
+                    {createdVault && (
+                        <div className="mt-4 p-4 bg-slate-950 border border-sky-500">
+                            <p className="text-xs uppercase text-slate-500 mb-1">
+                                Vault Address:
+                            </p>
+                            <p className="text-sky-400 break-all font-mono text-sm">
+                                {createdVault}
+                            </p>
+                            <p className="text-xs text-slate-500 mt-2">
+                                Save this address to manage your vault
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <div className="border-2 border-sky-500 bg-slate-900">
+                <div className="border-b-2 border-sky-500 bg-sky-500/10 px-6 py-4">
+                    <h2 className="text-xl font-bold text-sky-400">
+                        Edit Vault
+                    </h2>
+                </div>
+                <div className="p-6 space-y-4">
+                    <div>
+                        <label className="block text-xs uppercase text-slate-500 mb-1">
+                            Vault Address
+                        </label>
+                        <input
+                            type="text"
+                            className="w-full bg-slate-950 border border-slate-800 px-4 py-2 text-slate-100"
+                            value={vaultAddress}
+                            onChange={(e) => setVaultAddress(e.target.value)}
+                            placeholder="Enter vault address to edit"
                             disabled={buttonDisabled}
-                            className="w-full bg-sky-500 text-slate-950 py-3 px-6 font-bold uppercase tracking-wider cursor-pointer disabled:cursor-default"
-                        >
-                            {loading === "create"
-                                ? "Processing..."
-                                : "Create Vault"}
-                        </button>
-                        {createdVault && (
-                            <div className="mt-4 p-4 bg-slate-950 border border-sky-500">
-                                <p className="text-xs uppercase text-slate-500 mb-1">
-                                    Vault Address:
-                                </p>
-                                <p className="text-sky-400 break-all font-mono text-sm">
-                                    {createdVault}
-                                </p>
-                                <p className="text-xs text-slate-500 mt-2">
-                                    Save this address to manage your vault
-                                </p>
-                            </div>
-                        )}
+                        />
                     </div>
-                </div>
-
-                <div className="border-2 border-sky-500 bg-slate-900">
-                    <div className="border-b-2 border-sky-500 bg-sky-500/10 px-6 py-4">
-                        <h2 className="text-xl font-bold text-sky-400">
-                            Edit Vault
-                        </h2>
-                    </div>
-                    <div className="p-6 space-y-4">
-                        <div>
-                            <label className="block text-xs uppercase text-slate-500 mb-1">
-                                Vault Address
-                            </label>
-                            <input
-                                type="text"
-                                className="w-full bg-slate-950 border border-slate-800 px-4 py-2 text-slate-100"
-                                value={vaultAddress}
-                                onChange={(e) =>
-                                    setVaultAddress(e.target.value)
-                                }
-                                placeholder="Enter vault address to edit"
-                                disabled={buttonDisabled}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs uppercase text-slate-500 mb-1">
-                                New Owner (Pubkey)
-                            </label>
-                            <input
-                                type="text"
-                                className="w-full bg-slate-950 border border-slate-800 px-4 py-2 text-slate-100"
-                                value={editOwner}
-                                onChange={(e) => setEditOwner(e.target.value)}
-                                placeholder="Enter new owner public key"
-                                disabled={buttonDisabled}
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs uppercase text-slate-500 mb-1">
-                                New Withdraw Authority (Pubkey)
-                            </label>
-                            <input
-                                type="text"
-                                className="w-full bg-slate-950 border border-slate-800 px-4 py-2 text-slate-100"
-                                value={editWithdraw}
-                                onChange={(e) =>
-                                    setEditWithdraw(e.target.value)
-                                }
-                                placeholder="Enter new withdraw authority public key"
-                                disabled={buttonDisabled}
-                            />
-                        </div>
-                        <button
-                            onClick={handleEdit}
+                    <div>
+                        <label className="block text-xs uppercase text-slate-500 mb-1">
+                            New Owner (Pubkey)
+                        </label>
+                        <input
+                            type="text"
+                            className="w-full bg-slate-950 border border-slate-800 px-4 py-2 text-slate-100"
+                            value={editOwner}
+                            onChange={(e) => setEditOwner(e.target.value)}
+                            placeholder="Enter new owner public key"
                             disabled={buttonDisabled}
-                            className="w-full bg-sky-500 text-slate-950 py-3 px-6 font-bold uppercase tracking-wider cursor-pointer disabled:cursor-default"
-                        >
-                            {loading === "edit"
-                                ? "Processing..."
-                                : "Edit Vault"}
-                        </button>
+                        />
                     </div>
+                    <div>
+                        <label className="block text-xs uppercase text-slate-500 mb-1">
+                            New Withdraw Authority (Pubkey)
+                        </label>
+                        <input
+                            type="text"
+                            className="w-full bg-slate-950 border border-slate-800 px-4 py-2 text-slate-100"
+                            value={editWithdraw}
+                            onChange={(e) => setEditWithdraw(e.target.value)}
+                            placeholder="Enter new withdraw authority public key"
+                            disabled={buttonDisabled}
+                        />
+                    </div>
+                    <button
+                        onClick={handleEdit}
+                        disabled={buttonDisabled}
+                        className="w-full bg-sky-500 text-slate-950 py-3 px-6 font-bold uppercase tracking-wider cursor-pointer disabled:cursor-default"
+                    >
+                        {loading === "edit" ? "Processing..." : "Edit Vault"}
+                    </button>
                 </div>
+            </div>
 
-                {(status || error) && (
-                    <div className="mt-8 text-center">
-                        {status && (
-                            <div className="text-sky-400 font-bold mb-2">
-                                {status}
-                            </div>
-                        )}
-                        {error && (
-                            <div className="text-red-400 font-bold">
-                                {error}
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                <div className="mt-8 text-center text-sm text-slate-500">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                        <div className="w-2 h-2 bg-sky-400"></div>
-                        <p>Connected to ivy-vault bot</p>
-                    </div>
+            {(status || error) && (
+                <div className="mt-8 text-center">
+                    {status && (
+                        <div className="text-sky-400 font-bold mb-2">
+                            {status}
+                        </div>
+                    )}
+                    {error && (
+                        <div className="text-red-400 font-bold">{error}</div>
+                    )}
                 </div>
-            </main>
-        </div>
+            )}
+        </PageLayout>
     );
 }
 
