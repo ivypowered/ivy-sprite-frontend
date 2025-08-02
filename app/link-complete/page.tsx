@@ -143,7 +143,7 @@ export default function LinkCompletePage() {
                     {/* Command to Copy */}
                     <div>
                         <label className="text-xs uppercase text-slate-500 tracking-wider flex items-center gap-1 mb-2">
-                            <span className="text-sky-400">▸</span> Copy this
+                            <span className="text-sky-400">▸</span> Run this
                             command:
                         </label>
                         <div className="bg-slate-950 border border-slate-800 p-4 break-all">
@@ -153,9 +153,9 @@ export default function LinkCompletePage() {
                         </div>
                         <button
                             onClick={handleCopy}
-                            className="mt-3 w-full bg-sky-500 text-slate-950 py-2 px-4 font-bold uppercase tracking-wider hover:bg-sky-400 transition-colors text-sm"
+                            className="mt-3 w-full bg-sky-500 text-slate-950 py-2 px-4 font-bold uppercase tracking-wider hover:bg-sky-400 transition-colors text-sm cursor-pointer"
                         >
-                            {copied ? "Copied!" : "Copy Command"}
+                            {copied ? "Copied!" : "Copy"}
                         </button>
                     </div>
 

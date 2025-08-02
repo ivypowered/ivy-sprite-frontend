@@ -49,13 +49,6 @@ function LinkPage() {
     const buttonDisabled =
         state === "signing" || (publicKey !== null && !walletMatches);
 
-    // Auto-open wallet modal if params are valid but wallet not connected
-    useEffect(() => {
-        if (!publicKey && isValidWallet && discordId && timestamp) {
-            setShowModal(true);
-        }
-    }, [publicKey, isValidWallet, discordId, timestamp, setShowModal]);
-
     const handleSign = useCallback(async () => {
         if (!publicKey) {
             setShowModal(true);
