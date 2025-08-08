@@ -159,7 +159,7 @@ function PaymentComponent({
     const amount = idExtractAmount(paymentId);
 
     return (
-        <PageLayout>
+        <>
             {/* Main Card */}
             <div className="border-2 border-sky-500 bg-slate-900">
                 {/* Title Bar */}
@@ -228,7 +228,7 @@ function PaymentComponent({
                     </button>
                 </div>
             </div>
-        </PageLayout>
+        </>
     );
 }
 
