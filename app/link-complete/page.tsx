@@ -15,7 +15,12 @@ export default function LinkCompletePage() {
     const walletParam = searchParams.get("wallet") || "";
     const signatureParam = searchParams.get("signature") || "";
     const timestampParam = searchParams.get("timestamp") || "";
-    const discordId = searchParams.get("discord_id") || "";
+    const accountId = searchParams.get("discord_id") || ""; // keeping param name for compatibility
+
+    // Determine if this is Telegram or Discord
+    const isTelegram = accountId.startsWith("tg:");
+    const platform = isTelegram ? "Telegram" : "Discord";
+    const commandPrefix = isTelegram ? "/" : "$";
 
     // Generate the base64 response
     const linkCommand = useMemo(() => {
@@ -47,12 +52,12 @@ export default function LinkCompletePage() {
             // Encode to base64
             const base64Response = btoa(String.fromCharCode(...response));
 
-            return `$link complete ${base64Response}`;
+            return `${commandPrefix}link complete ${base64Response}`;
         } catch (err) {
             console.error("Error generating link command:", err);
             return null;
         }
-    }, [walletParam, signatureParam, timestampParam]);
+    }, [walletParam, signatureParam, timestampParam, commandPrefix]);
 
     const handleCopy = async () => {
         if (!linkCommand) return;
@@ -105,9 +110,11 @@ export default function LinkCompletePage() {
                         />
                     </svg>
                 </div>
-                <h2 className="text-3xl font-bold mb-2">Signature Verified!</h2>
+                <h2 className="text-3xl font-bold mb-2 text-slate-100">
+                    Signature Verified!
+                </h2>
                 <p className="text-xl text-slate-400">
-                    Now complete the linking in Discord
+                    Now complete the linking in {platform}
                 </p>
             </div>
 
@@ -124,10 +131,10 @@ export default function LinkCompletePage() {
                     <div className="space-y-4">
                         <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                             <span className="text-slate-400 text-sm uppercase tracking-wider">
-                                Discord User:
+                                {platform} User:
                             </span>
                             <span className="font-mono text-sm text-sky-400">
-                                {discordId}
+                                {accountId}
                             </span>
                         </div>
                         <div className="border-b border-slate-800 pb-3">
@@ -166,7 +173,10 @@ export default function LinkCompletePage() {
                         </h3>
                         <ol className="list-decimal list-inside space-y-1 text-sm text-slate-300">
                             <li>Copy the command above</li>
-                            <li>Go back to your Discord DM with ivy-sprite</li>
+                            <li>
+                                Go back to your {platform}{" "}
+                                {isTelegram ? "chat" : "DM"} with ivy-sprite
+                            </li>
                             <li>Paste and send the command</li>
                             <li>Your wallet will be linked!</li>
                         </ol>

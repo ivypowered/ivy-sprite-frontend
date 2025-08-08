@@ -19,8 +19,13 @@ function LinkPage() {
 
     // Get params from URL
     const walletParam = searchParams.get("wallet") || "";
-    const discordId = searchParams.get("id") || "";
+    const accountId = searchParams.get("id") || "";
     const timestamp = searchParams.get("timestamp") || "";
+
+    // Determine if this is Telegram or Discord
+    const isTelegram = accountId.startsWith("tg:");
+    const platform = isTelegram ? "Telegram" : "Discord";
+    const commandPrefix = isTelegram ? "/" : "$";
 
     // Validate wallet address
     const isValidWallet = useMemo(() => {
@@ -66,7 +71,7 @@ function LinkPage() {
             setError(null);
 
             // Construct the message
-            const message = `Link wallet ${walletParam} to ivy-sprite user ${discordId} at ${timestamp}`;
+            const message = `Link wallet ${walletParam} to ivy-sprite user ${accountId} at ${timestamp}`;
             const messageBytes = new TextEncoder().encode(message);
 
             // Sign the message
@@ -77,7 +82,7 @@ function LinkPage() {
                 wallet: walletParam,
                 signature: bs58.encode(signature),
                 timestamp: timestamp,
-                discord_id: discordId,
+                discord_id: accountId,
             });
             router.push(`/link-complete?${params.toString()}`);
         } catch (err) {
@@ -91,7 +96,7 @@ function LinkPage() {
         publicKey,
         walletMatches,
         walletParam,
-        discordId,
+        accountId,
         timestamp,
         signMessage,
         openModal,
@@ -99,7 +104,7 @@ function LinkPage() {
     ]);
 
     // Validate params
-    if (!isValidWallet || !discordId || !timestamp) {
+    if (!isValidWallet || !accountId || !timestamp) {
         return (
             <PageLayout>
                 <div className="border-2 border-red-500 bg-slate-900">
@@ -112,8 +117,10 @@ function LinkPage() {
                         <p className="text-slate-300">
                             This link is invalid or has expired. Please generate
                             a new link using the{" "}
-                            <code className="text-sky-400">$link</code> command
-                            in Discord.
+                            <code className="text-sky-400">
+                                {commandPrefix}link
+                            </code>{" "}
+                            command in {platform}.
                         </p>
                     </div>
                 </div>
@@ -126,19 +133,19 @@ function LinkPage() {
             <div className="border-2 border-sky-500 bg-slate-900">
                 <div className="border-b-2 border-sky-500 bg-sky-500/10 px-6 py-4">
                     <h2 className="text-xl font-bold text-sky-400">
-                        Link Wallet to Discord
+                        Link Wallet to {platform}
                     </h2>
                 </div>
 
                 <div className="p-6 space-y-6">
-                    {/* Discord User */}
+                    {/* Account User */}
                     <div>
                         <label className="text-xs uppercase text-slate-500 tracking-wider flex items-center gap-1">
-                            <span className="text-sky-400">▸</span> Discord User
-                            ID
+                            <span className="text-sky-400">▸</span> {platform}{" "}
+                            User ID
                         </label>
-                        <div className="mt-1 bg-slate-950 border border-slate-800 px-4 py-3 font-mono text-sm">
-                            {discordId}
+                        <div className="mt-1 bg-slate-950 border border-slate-800 px-4 py-3 font-mono text-sm text-slate-300">
+                            {accountId}
                         </div>
                     </div>
 
@@ -148,7 +155,7 @@ function LinkPage() {
                             <span className="text-sky-400">▸</span> Wallet to
                             Link
                         </label>
-                        <div className="mt-1 bg-slate-950 border border-slate-800 px-4 py-3 font-mono text-sm break-all">
+                        <div className="mt-1 bg-slate-950 border border-slate-800 px-4 py-3 font-mono text-sm break-all text-slate-300">
                             {walletParam}
                         </div>
                     </div>
