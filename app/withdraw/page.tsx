@@ -1,11 +1,10 @@
 // app/withdraw/page.tsx
 "use client";
 
-import { WalletProvider } from "@/components/WalletProvider";
 import { Payment } from "@/components/Payment";
 import { useSearchParams } from "next/navigation";
 
-function WithdrawPage() {
+export default function Page() {
     const searchParams = useSearchParams();
 
     const name = searchParams.get("name") || "";
@@ -23,13 +22,5 @@ function WithdrawPage() {
             authority={authority}
             signature={signature}
         />
-    );
-}
-
-export default function Page() {
-    return (
-        <WalletProvider>
-            <WithdrawPage />
-        </WalletProvider>
     );
 }

@@ -1,11 +1,10 @@
 // app/deposit/page.tsx
 "use client";
 
-import { WalletProvider } from "@/components/WalletProvider";
 import { Payment } from "@/components/Payment";
 import { useSearchParams } from "next/navigation";
 
-function DepositPage() {
+export default function Page() {
     const searchParams = useSearchParams();
 
     const name = searchParams.get("name") || "";
@@ -19,13 +18,5 @@ function DepositPage() {
             userId={userId}
             paymentId={depositId}
         />
-    );
-}
-
-export default function Page() {
-    return (
-        <WalletProvider>
-            <DepositPage />
-        </WalletProvider>
     );
 }

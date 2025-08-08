@@ -1,7 +1,6 @@
 // app/link/page.tsx
 "use client";
 
-import { WalletProvider } from "@/components/WalletProvider";
 import { PageLayout } from "@/components/PageLayout";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCallback, useState, useMemo } from "react";
@@ -9,7 +8,7 @@ import { PublicKey } from "@solana/web3.js";
 import bs58 from "bs58";
 import { useWContext } from "@/components/WProvider";
 
-function LinkPage() {
+export default function Page() {
     const { publicKey, signMessage, openModal } = useWContext();
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -207,13 +206,5 @@ function LinkPage() {
                 </div>
             </div>
         </PageLayout>
-    );
-}
-
-export default function Page() {
-    return (
-        <WalletProvider>
-            <LinkPage />
-        </WalletProvider>
     );
 }

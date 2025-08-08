@@ -1,6 +1,5 @@
 "use client";
 
-import { WalletProvider } from "@/components/WalletProvider";
 import { PageLayout } from "@/components/PageLayout";
 import { Vault } from "ivy-sdk";
 import { ComputeBudgetProgram, PublicKey, Transaction } from "@solana/web3.js";
@@ -8,7 +7,7 @@ import { useCallback, useState } from "react";
 import { Api } from "@/lib/api";
 import { useWContext } from "@/components/WProvider";
 
-function SetupPage() {
+export default function Page() {
     const { publicKey, signTransaction, openModal } = useWContext();
 
     const [vaultAddress, setVaultAddress] = useState("");
@@ -231,13 +230,5 @@ function SetupPage() {
                 </div>
             )}
         </PageLayout>
-    );
-}
-
-export default function Page() {
-    return (
-        <WalletProvider>
-            <SetupPage />
-        </WalletProvider>
     );
 }
