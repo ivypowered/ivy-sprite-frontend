@@ -3,18 +3,14 @@
 
 import { WalletProvider } from "@/components/WalletProvider";
 import { PageLayout } from "@/components/PageLayout";
-import {
-    useUnifiedWallet,
-    useUnifiedWalletContext,
-} from "@jup-ag/wallet-adapter";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useCallback, useState, useMemo, useEffect } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { PublicKey } from "@solana/web3.js";
 import bs58 from "bs58";
+import { useWContext } from "@/components/WProvider";
 
 function LinkPage() {
-    const { publicKey, signMessage } = useUnifiedWallet();
-    const { setShowModal } = useUnifiedWalletContext();
+    const { publicKey, signMessage, openModal } = useWContext();
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -51,7 +47,7 @@ function LinkPage() {
 
     const handleSign = useCallback(async () => {
         if (!publicKey) {
-            setShowModal(true);
+            openModal();
             return;
         }
 
@@ -98,7 +94,7 @@ function LinkPage() {
         discordId,
         timestamp,
         signMessage,
-        setShowModal,
+        openModal,
         router,
     ]);
 

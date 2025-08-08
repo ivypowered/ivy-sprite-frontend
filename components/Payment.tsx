@@ -3,16 +3,13 @@
 
 import { Api } from "@/lib/api";
 import { Vault } from "ivy-sdk";
-import {
-    useUnifiedWallet,
-    useUnifiedWalletContext,
-} from "@jup-ag/wallet-adapter";
 import { ComputeBudgetProgram, PublicKey, Transaction } from "@solana/web3.js";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { SPRITE_VAULT } from "@/lib/constants";
 import { idExtractAmount } from "@/lib/util";
 import { PageLayout } from "./PageLayout";
+import { useWContext } from "./WProvider";
 
 type PaymentType = "deposit" | "withdraw";
 
@@ -33,8 +30,7 @@ export function Payment({
     authority,
     signature,
 }: PaymentProps) {
-    const { publicKey, signTransaction } = useUnifiedWallet();
-    const { setShowModal } = useUnifiedWalletContext();
+    const { publicKey, signTransaction, openModal } = useWContext();
     const router = useRouter();
 
     const [state, setState] = useState<
@@ -73,7 +69,7 @@ export function Payment({
 
     const onButtonClick = useCallback(async () => {
         if (!publicKey) {
-            setShowModal(true);
+            openModal();
             return;
         }
 
@@ -146,7 +142,7 @@ export function Payment({
         }
     }, [
         publicKey,
-        setShowModal,
+        openModal,
         signTransaction,
         paymentId,
         signature,

@@ -3,17 +3,13 @@
 import { WalletProvider } from "@/components/WalletProvider";
 import { PageLayout } from "@/components/PageLayout";
 import { Vault } from "ivy-sdk";
-import {
-    useUnifiedWallet,
-    useUnifiedWalletContext,
-} from "@jup-ag/wallet-adapter";
 import { ComputeBudgetProgram, PublicKey, Transaction } from "@solana/web3.js";
 import { useCallback, useState } from "react";
 import { Api } from "@/lib/api";
+import { useWContext } from "@/components/WProvider";
 
 function SetupPage() {
-    const { publicKey, signTransaction } = useUnifiedWallet();
-    const { setShowModal } = useUnifiedWalletContext();
+    const { publicKey, signTransaction, openModal } = useWContext();
 
     const [vaultAddress, setVaultAddress] = useState("");
     const [editOwner, setEditOwner] = useState("");
@@ -30,7 +26,7 @@ function SetupPage() {
         setStatus(null);
         setCreatedVault(null);
         if (!publicKey) {
-            setShowModal(true);
+            openModal();
             return;
         }
         setLoading("create");
@@ -67,13 +63,13 @@ function SetupPage() {
             setError(String(e));
         }
         setLoading(null);
-    }, [publicKey, setShowModal, signTransaction]);
+    }, [publicKey, openModal, signTransaction]);
 
     const handleEdit = useCallback(async () => {
         setError(null);
         setStatus(null);
         if (!publicKey) {
-            setShowModal(true);
+            openModal();
             return;
         }
         let vault: PublicKey, newOwner: PublicKey, newWithdraw: PublicKey;
@@ -119,7 +115,7 @@ function SetupPage() {
         setLoading(null);
     }, [
         publicKey,
-        setShowModal,
+        openModal,
         signTransaction,
         vaultAddress,
         editOwner,
