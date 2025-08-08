@@ -7,7 +7,7 @@ import { useCallback, useState } from "react";
 import { Api } from "@/lib/api";
 import { useWContext } from "@/components/WProvider";
 
-export default function Page() {
+function SetupPage() {
     const { publicKey, signTransaction, openModal } = useWContext();
 
     const [vaultAddress, setVaultAddress] = useState("");
@@ -122,7 +122,7 @@ export default function Page() {
     ]);
 
     return (
-        <PageLayout hideFooter>
+        <>
             <div className="text-center mb-12">
                 <h1 className="text-4xl font-bold text-sky-400 mb-2">
                     ivy-vault setup
@@ -229,6 +229,14 @@ export default function Page() {
                     )}
                 </div>
             )}
+        </>
+    );
+}
+
+export default function Page() {
+    return (
+        <PageLayout hideFooter>
+            <SetupPage />
         </PageLayout>
     );
 }

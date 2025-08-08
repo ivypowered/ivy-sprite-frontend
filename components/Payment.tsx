@@ -22,7 +22,7 @@ interface PaymentProps {
     signature?: string; // Only for withdrawals
 }
 
-export function Payment({
+function PaymentComponent({
     type,
     name,
     userId,
@@ -228,6 +228,14 @@ export function Payment({
                     </button>
                 </div>
             </div>
+        </PageLayout>
+    );
+}
+
+export function Payment(p: PaymentProps) {
+    return (
+        <PageLayout>
+            <PaymentComponent {...p} />
         </PageLayout>
     );
 }

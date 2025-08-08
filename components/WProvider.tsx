@@ -152,9 +152,7 @@ export function WProvider({
 export function useWContext() {
     const context = useContext(WContext);
     if (!context) {
-        throw new Error(
-            "useSimpleWallet must be used within SimpleWalletProvider",
-        );
+        throw new Error("useWContext must be used within WProvider");
     }
     return context;
 }
