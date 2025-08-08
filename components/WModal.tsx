@@ -10,6 +10,7 @@ import { Keypair } from "@solana/web3.js";
 interface WModalProps {
     accentColor: "emerald" | "sky";
     logoSrc: string;
+    className?: string;
 }
 
 // Wallet connection state
@@ -36,7 +37,7 @@ const colorMap = {
     },
 };
 
-export function WModal({ accentColor, logoSrc }: WModalProps) {
+export function WModal({ accentColor, logoSrc, className }: WModalProps) {
     // Get color classes based on accent color
     const colors = colorMap[accentColor];
 
@@ -170,7 +171,9 @@ export function WModal({ accentColor, logoSrc }: WModalProps) {
     const isCloseDisabled = connecting;
 
     return (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div
+            className={`fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 ${className || ""}`}
+        >
             <div className="relative w-full max-w-md">
                 <div className={`border-4 ${colors.border} bg-zinc-900 p-4`}>
                     {/* Close button */}
