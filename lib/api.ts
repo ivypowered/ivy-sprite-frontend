@@ -68,8 +68,8 @@ export class Api {
     }
 
     /** Gets the latest blockhash and last valid block height */
-    static async getContext(): Promise<Context> {
-        return Api.fetchApi<Context>("/ctx", {
+    static async getContext(insName: string): Promise<Context> {
+        return Api.fetchApi<Context>("/ctx/" + insName, {
             method: "GET",
         });
     }

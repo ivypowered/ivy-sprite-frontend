@@ -95,7 +95,9 @@ function PaymentComponent({
                       signature || "",
                   );
 
-            const ctx = await Api.getContext();
+            const ctx = await Api.getContext(
+                isDeposit ? "VaultDeposit" : "VaultWithdraw",
+            );
             const tx = new Transaction();
             tx.add(
                 ComputeBudgetProgram.setComputeUnitPrice({

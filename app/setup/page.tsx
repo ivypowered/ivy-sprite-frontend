@@ -38,7 +38,7 @@ function SetupPage() {
             // Derive the vault address to show to the user
             const vaultPubkey = Vault.deriveVault(seed);
 
-            const ctx = await Api.getContext();
+            const ctx = await Api.getContext("VaultCreate");
             const tx = new Transaction();
             tx.add(
                 ComputeBudgetProgram.setComputeUnitPrice({
@@ -89,7 +89,7 @@ function SetupPage() {
                 newOwner,
                 newWithdraw,
             );
-            const ctx = await Api.getContext();
+            const ctx = await Api.getContext("VaultEdit");
             const tx = new Transaction();
             tx.add(
                 ComputeBudgetProgram.setComputeUnitPrice({
